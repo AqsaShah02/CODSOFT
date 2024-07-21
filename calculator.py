@@ -1,15 +1,23 @@
-import tkinter as tk
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLineEdit
+from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt
 
-class CalculatorApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Basic Calculator")
-        self.root.geometry("300x400")
-        self.create_widgets()
+class CalculatorApp(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.init_ui()
+        
+    def init_ui(self):
+        self.setWindowTitle('Basic Calculator')
+        self.setGeometry(100, 100, 300, 400)
 
-    def create_widgets(self):
-        self.display = tk.Entry(self.root, font=("Arial", 24), bd=10, insertwidth=4, width=14, borderwidth=4, justify='right')
-        self.display.grid(row=0, column=0, columnspan=4)
+        grid = QGridLayout()
+        self.setLayout(grid)
+        
+        self.display = QLineEdit()
+        self.display.setAlignment(Qt.AlignRight)
+        self.display.setFont(QFont('Arial', 24))
+        grid.addWidget(self.display, 0, 0, 1, 4)
 
         buttons = [
             ('7', 1, 0), ('8', 1, 1), ('9', 1, 2), ('/', 1, 3),
@@ -24,32 +32,28 @@ class CalculatorApp:
             row = button[1]
             col = button[2]
             colspan = button[3] if len(button) > 3 else 1
-            tk.Button(self.root, text=text, padx=20, pady=20, font=("Arial", 18), command=lambda t=text: self.on_button_click(t)).grid(row=row, column=col, columnspan=colspan, sticky='nsew')
-
-        for i in range(6):
-            self.root.grid_rowconfigure(i, weight=1)
-        for i in range(4):
-            self.root.grid_columnconfigure(i, weight=1)
-
-    def on_button_click(self, button_text):
-        if button_text == 'C':
-            self.display.delete(0, tk.END)
-        elif button_text == '=':
+            button_widget = QPushButton(text)
+            button_widget.setFont(QFont('Arial', 18))
+            button_widget.clicked.connect(lambda _, t=text: self.on_button_click(t))
+            grid.addWidget(button_widget, row, col, 1, colspan)
+        
+    def on_button_click(self, text):
+        if text == 'C':
+            self.display.clear()
+        elif text == '=':
             try:
-                expression = self.display.get()
+                expression = self.display.text()
                 result = str(eval(expression))
-                self.display.delete(0, tk.END)
-                self.display.insert(0, result)
-            except Exception as e:
-                self.display.delete(0, tk.END)
-                self.display.insert(0, "Error")
+                self.display.setText(result)
+            except Exception:
+                self.display.setText('Error')
         else:
-            current_text = self.display.get()
-            new_text = current_text + button_text
-            self.display.delete(0, tk.END)
-            self.display.insert(0, new_text)
+            current_text = self.display.text()
+            new_text = current_text + text
+            self.display.setText(new_text)
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = CalculatorApp(root)
-    root.mainloop()
+if __name__ == '__main__':
+    app = QApplication([])
+    calc = CalculatorApp()
+    calc.show()
+    app.exec_()
