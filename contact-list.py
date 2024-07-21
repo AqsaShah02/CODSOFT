@@ -36,7 +36,7 @@ class ContactList:
     
     def view_contacts(self):
         if not self.contacts:
-            return "No contacts found."
+            return "No contack found."
         else:
             return "\n-------------------\n".join(str(contact) for contact in self.contacts)
     
@@ -46,14 +46,14 @@ class ContactList:
             if keyword.lower() in contact.name.lower() or keyword in contact.phone_number:
                 result.append(str(contact))
         if not result:
-            return "Contact not found."
+            return "Contact not founf"
         return "\n-------------------\n".join(result)
     
     def update_contact(self, name, phone_number=None, email=None, address=None):
         for contact in self.contacts:
             if contact.name.lower() == name.lower():
                 contact.update_details(phone_number, email, address)
-                return "Contact updated successfully."
+                return "Contact update successfull."
         return "Contact not found."
     
     def delete_contact(self, name):
@@ -88,7 +88,7 @@ class ContactManagementApp:
        
         tk.Button(button_frame, text="Add Contact", command=self.add_contact).grid(row=0, column=0, padx=5, pady=5, sticky="ew")
         tk.Button(button_frame, text="View Contacts", command=self.view_contacts).grid(row=0, column=1, padx=5, pady=5, sticky="ew")
-        tk.Button(button_frame, text="Search Contact", command=self.search_contact).grid(row=0, column=2, padx=5, pady=5, sticky="ew")
+        tk.Button(button_frame, text="Search contqct", command=self.search_contact).grid(row=0, column=2, padx=5, pady=5, sticky="ew")
         tk.Button(button_frame, text="Update Contact", command=self.update_contact).grid(row=0, column=3, padx=5, pady=5, sticky="ew")
         tk.Button(button_frame, text="Delete Contact", command=self.delete_contact).grid(row=0, column=4, padx=5, pady=5, sticky="ew")
         tk.Button(button_frame, text="Exit", command=self.root.quit).grid(row=0, column=5, padx=5, pady=5, sticky="ew")
@@ -144,7 +144,7 @@ class ContactManagementApp:
 
 
 
-            
+
 
 if __name__ == "__main__":
     root = tk.Tk()
